@@ -1,0 +1,25 @@
+CHECKPOINT MÓDULO 1 — Mateo Sapia
+
+Archivo: checkpoint_modulo1.txt
+Evidencia real de ejecución en PowerShell con el entorno virtual del proyecto activado mediante .\.venv\Scripts\Activate.ps1.
+Se verificó sys.prefix != sys.base_prefix: True.
+
+Comando: python --version
+Python 3.12.10
+
+Comando: python evidencia_post.py
+--- REPORTE DE SISTEMA ---
+Post: Mi primer post en Python
+Autor: Mateo Sapia
+Estado: Entorno configurado correctamente
+--------------------------
+
+Resultado: proceso terminado sin errores (código de salida 0).
+
+Estructura de la carpeta de esta preentrega:
+.venv/ — entorno aislado de Python; existe localmente y está excluido de Git.
+.vscode/settings.json — configura el intérprete local .venv/Scripts/python.exe.
+evidencia_post.py — imprime título, autor y estado del post.
+checkpoint_modulo1.txt — resultado de ejecución y descripción de archivos.
+
+Visual Studio Code está instalado y la configuración del proyecto apunta a su entorno virtual. La ejecución documentada se realizó en PowerShell; no se presenta una captura de la terminal integrada de VS Code.
