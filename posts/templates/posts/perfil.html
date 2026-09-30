@@ -1,0 +1,3 @@
+{% extends 'posts/base.html' %}
+{% block title %}Mi perfil · Bitácora Python{% endblock %}
+{% block content %}<section class="form-panel"><p class="eyebrow">{{ user.username }}</p><h1>Mi perfil</h1>{% if perfil.avatar %}<img class="avatar" src="{{ perfil.avatar.url }}" alt="Avatar de {{ user.username }}">{% endif %}<form method="post" enctype="multipart/form-data">{% csrf_token %}{{ form.as_p }}<button type="submit">Guardar perfil</button></form></section>{% endblock %}

@@ -6,3 +6,6 @@ class PostAdmin(admin.ModelAdmin):
     list_display = ('titulo', 'autor', 'estado', 'fecha_creacion')
     list_filter = ('estado',)
     search_fields = ('titulo', 'contenido', 'autor')
+
+from .models import Perfil
+admin.site.register(Perfil)

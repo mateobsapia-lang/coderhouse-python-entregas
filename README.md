@@ -60,3 +60,6 @@ Ejecutar `python manage.py migrate` y `python manage.py createsuperuser`. Ingres
 
 ## Módulo 10: CRUD e imágenes
 Formularios multipart y `request.FILES` guardan imágenes en `media/posts/`. `MEDIA_ROOT` usa BASE_DIR; las URLs de desarrollo sirven los archivos. La carpeta media no se versiona: subir imágenes nuevas desde el formulario al reconstruir el proyecto. Los detalles toleran publicaciones sin imagen.
+
+## Módulo 11: cuentas y perfil
+Registro, login, logout por POST y perfil con biografía, enlace y avatar. Las acciones de escritura requieren sesión y la propiedad del post. `Perfil` es el modelo; `Profile` es un alias para el nombre usado en el checklist. Una señal crea el perfil automáticamente y el registro usa `get_or_create` para no duplicarlo.

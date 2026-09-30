@@ -2,6 +2,6 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{% block title %}Bitácora Python{% endblock %}</title><link rel="stylesheet" href="{% static 'posts/css/estilos.css' %}"></head>
 <body><header class="site-header"><a class="brand" href="{% url 'posts:inicio' %}">Bitácora <strong>Python</strong></a>
-<nav aria-label="Navegación principal"><a href="{% url 'posts:inicio' %}">Inicio</a><a href="{% url 'posts:acerca' %}">Acerca de</a>{% block menu %}{% endblock %}</nav></header>
+<nav aria-label="Navegación principal"><a href="{% url 'posts:inicio' %}">Inicio</a><a href="{% url 'posts:acerca' %}">Acerca de</a>{% if user.is_authenticated %}<a href="{% url 'posts:crear' %}">Escribir</a><a href="{% url 'posts:mis_posts' %}">Mis publicaciones</a><a href="{% url 'posts:perfil' %}">Mi perfil</a><form class="inline" method="post" action="{% url 'posts:logout' %}">{% csrf_token %}<button type="submit">Salir</button></form>{% else %}<a href="{% url 'posts:login' %}">Ingresar</a><a href="{% url 'posts:registro' %}">Crear cuenta</a>{% endif %}</nav></header>
 <main id="contenido">{% if messages %}<div aria-live="polite">{% for message in messages %}<p class="notice">{{ message }}</p>{% endfor %}</div>{% endif %}{% block content %}{% endblock %}</main>
 <footer>Mateo Sapia · Proyecto del curso de Python · Coderhouse</footer></body></html>

@@ -1,0 +1,3 @@
+{% extends 'posts/base.html' %}
+{% block title %}Ingresar · Bitácora Python{% endblock %}
+{% block content %}<section class="form-panel"><h1>Ingresar</h1><form method="post">{% csrf_token %}{{ form.as_p }}{% if next %}<input type="hidden" name="next" value="{{ next }}">{% endif %}<button type="submit">Ingresar</button></form><p>¿Todavía no tenés cuenta? <a href="{% url 'posts:registro' %}">Registrarte</a></p></section>{% endblock %}
