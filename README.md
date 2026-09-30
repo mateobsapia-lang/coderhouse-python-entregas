@@ -54,3 +54,6 @@ Las etapas 1–6 usan la biblioteca estándar. Los contenidos de los posts son d
 
 ## Continuación: módulo 8
 Inicio y Acerca de usan herencia de templates y CSS de la app. Rama `continuacion-blog`, preparada antes de la apertura del campus.
+
+## Módulo 9: modelos y admin
+Ejecutar `python manage.py migrate` y `python manage.py createsuperuser`. Ingresar a `/admin/` con ese usuario y cargar al menos tres Posts de estados diferentes. El inicio lista solo publicados, ordenados por fecha. Base local ignorada; repetir estos pasos al clonar.
