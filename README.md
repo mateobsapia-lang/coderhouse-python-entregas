@@ -51,3 +51,6 @@ La configuración es de desarrollo local (`DEBUG=True`). La clave de firma se ge
 | 6. Objetos y JSON | [06_poo_json](preentregas/06_poo_json) | `python main.py` |
 
 Las etapas 1–6 usan la biblioteca estándar. Los contenidos de los posts son datos de muestra. La evidencia de ejecución y el informe de pruebas están en `evidencias/`. Para repetir las verificaciones: `python pruebas/verificar.py` desde la raíz, con el entorno activado.
+
+## Continuación: módulo 8
+Inicio y Acerca de usan herencia de templates y CSS de la app. Rama `continuacion-blog`, preparada antes de la apertura del campus.

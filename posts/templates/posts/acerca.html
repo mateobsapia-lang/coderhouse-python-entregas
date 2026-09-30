@@ -1,0 +1,3 @@
+{% extends 'posts/base.html' %}
+{% block title %}Acerca de · Bitácora Python{% endblock %}
+{% block content %}<article class="reading"><p class="eyebrow">ACERCA DEL PROYECTO</p><h1>De la consola a la web.</h1><p>Soy Mateo Sapia, estudiante del curso de Python de Coderhouse. Este blog reúne la práctica de Django realizada durante el curso.</p><p>El proyecto comenzó con ejercicios de Python, funciones, paquetes y objetos. Esta aplicación continúa ese recorrido con páginas, datos y publicaciones.</p><a href="{% url 'posts:inicio' %}">Volver al inicio</a></article>{% endblock %}
