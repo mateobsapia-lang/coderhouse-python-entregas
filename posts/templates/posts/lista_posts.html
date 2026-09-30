@@ -1,0 +1,2 @@
+{% extends 'posts/base.html' %}
+{% block content %}<section class="hero"><p class="eyebrow">BITÁCORA DEL CURSO</p><h1>Ideas que toman forma.</h1><p>Publicaciones sobre Python, datos y desarrollo web.</p></section><h2>Últimas publicaciones</h2><div class="grid">{% for post in posts %}<article class="card"><p class="meta">{{ post.autor }} · {{ post.fecha_creacion|date:"d/m/Y" }}</p><h3>{{ post.titulo }}</h3><div class="body-copy">{{ post.contenido|linebreaks }}</div></article>{% empty %}<p>Todavía no hay publicaciones.</p>{% endfor %}</div>{% endblock %}

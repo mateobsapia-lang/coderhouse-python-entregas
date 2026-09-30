@@ -1,6 +1,6 @@
 # Blog Project — Python, Mateo Sapia
 
-Evolución de un blog desde scripts de consola hasta un sitio Django con HTML y CSS. La preentrega 8 continúa el proyecto Django de la preentrega 7 en la raíz; las etapas anteriores quedan preservadas en `preentregas/` dentro del mismo repositorio.
+Evolución de un blog desde scripts de consola hasta un sitio Django con HTML, CSS y publicaciones almacenadas en SQLite. La preentrega 9 continúa el proyecto de los módulos 7 y 8 en la raíz; las etapas anteriores quedan preservadas en `preentregas/` dentro del mismo repositorio.
 
 ## Ejecutar el sitio Django
 
@@ -33,9 +33,9 @@ python manage.py migrate
 python manage.py runserver
 ```
 
-Abrir http://127.0.0.1:8000/ para ver el inicio del blog. El menú permite visitar http://127.0.0.1:8000/acerca/ y volver al inicio. Detener con Ctrl+C.
+Abrir http://127.0.0.1:8000/ para ver las publicaciones del blog. El menú permite visitar http://127.0.0.1:8000/acerca/ y volver al inicio. Detener con Ctrl+C.
 
-Proyecto: `blog_project`. App principal: `posts`, registrada como `posts.apps.PostsConfig`. Idioma `es-ar`; zona `America/Argentina/Buenos_Aires`. Esta entrega agrega dos vistas basadas en funciones con `render()`, templates con herencia y CSS. No incluye todavía modelos propios ni formularios.
+Proyecto: `blog_project`. App principal: `posts`, registrada como `posts.apps.PostsConfig`. Idioma `es-ar`; zona `America/Argentina/Buenos_Aires`. El modelo `Post` guarda título, contenido, autor, fecha automática y estado. El inicio consulta los posts publicados mediante el ORM y los muestra con un bucle en `lista_posts.html`.
 
 La configuración es de desarrollo local (`DEBUG=True`). La clave de firma se genera en memoria para cada arranque; puede fijarse con la variable de entorno `DJANGO_SECRET_KEY` para conservar sesiones entre reinicios. No contiene una clave privada persistente en el repositorio. `.gitignore` excluye `.venv/`, `venv/`, `db.sqlite3`, `.env`, temporales y cachés.
 
@@ -60,6 +60,30 @@ Las etapas 1–6 usan la biblioteca estándar. Los contenidos de los posts son d
 - `posts/templates/posts/base.html` contiene el menú, `{% load static %}` y el bloque `content`; `inicio.html` y `acerca.html` lo extienden.
 - `posts/static/posts/css/estilos.css` define los colores, la tipografía, el menú y los estilos adaptables a pantallas pequeñas.
 
-La rama `main` contiene esta etapa. El commit `55090f8` registra la implementación de templates y CSS; la rama `continuacion-blog` preserva los avances de los módulos posteriores.
+El commit `55090f8` registra la implementación de templates y CSS.
 
-Verificación: `python manage.py check` no informa problemas. Las rutas `/`, `/acerca/` y `/static/posts/css/estilos.css` responden con código 200 al ejecutar el servidor de desarrollo.
+## Preentrega 9: modelos y admin
+
+`main` contiene este checkpoint. `posts/models.py` define `Post` con los campos `titulo`, `contenido`, `autor`, `fecha_creacion` (`auto_now_add=True`) y `estado` con opciones Borrador, Publicado y Archivado. `__str__` devuelve el título. La migración `posts/migrations/0001_initial.py` crea la tabla.
+
+Para entrar al panel administrativo:
+
+```sh
+python manage.py migrate
+python manage.py createsuperuser
+python manage.py runserver
+```
+
+Abrir http://127.0.0.1:8000/admin/ e ingresar con el superusuario creado localmente. Agregar al menos tres publicaciones con títulos y contenidos distintos; usar, por ejemplo, dos Publicadas y una Borrador. `PostAdmin` muestra título, autor, estado y fecha; incluye filtros y búsqueda. No hay usuarios ni contraseñas reales versionados.
+
+El inicio (`/`) utiliza `lista_posts`, consulta `Post.objects.filter(estado="publicado").order_by("-fecha_creacion")` y renderiza `lista_posts.html`. Los borradores y archivados quedan fuera del listado público. La base SQLite es local y está ignorada por Git; las migraciones permiten reconstruirla al clonar. El recorrido previo por `/admin/` y la carga de tres posts se documentan en la continuación del proyecto; las pruebas de este checkpoint verifican también el guardado desde el admin y la visibilidad según el estado.
+
+Verificación:
+
+```sh
+python manage.py check
+python manage.py makemigrations --check --dry-run
+python manage.py test posts
+```
+
+Los módulos 10, 11 y el final preparados siguen en la rama `continuacion-blog`.
