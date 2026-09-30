@@ -1,65 +1,76 @@
-# Blog Project — Python, Mateo Sapia
+# Bitácora Python — Mateo Sapia
 
-Evolución de un blog desde scripts de consola hasta la base de Django. El proyecto Django de la preentrega 7 está en la raíz; las etapas anteriores quedan preservadas en `preentregas/` dentro del mismo repositorio.
+Blog académico desarrollado con Python 3.12, Django 5.2, SQLite, HTML, CSS y Pillow. Continúa el mismo proyecto de los módulos anteriores. La rama `continuacion-blog` contiene las preentregas 8–11 y la consolidación final preparadas antes de su apertura; `main` conserva la versión presentada hasta el módulo 7.
 
-## Ejecutar la base Django
+## Funcionalidades
 
-Requisitos: Python 3.12 y Git.
+- Inicio y Acerca de con herencia de templates y CSS propio, sin CDN.
+- Posts con título, contenido, autor, fecha, estado e imagen opcional.
+- CRUD web; eliminación con confirmación y POST.
+- Registro, login, logout por POST y perfil con biografía, web y avatar.
+- Escritura protegida por `login_required`. Solo el propietario puede editar o borrar su post. Borradores y archivados solo son visibles para su propietario.
+- Búsqueda de publicaciones por título o contenido; mensaje sin resultados.
+- Admin con filtros por estado y búsqueda.
 
-```sh
-git clone https://github.com/mateobsapia-lang/coderhouse-python-entregas.git
+## Instalación local desde cero
+
+```bash
+git clone --branch continuacion-blog https://github.com/mateobsapia-lang/coderhouse-python-entregas.git
 cd coderhouse-python-entregas
 python -m venv .venv
 ```
 
-Activar en Windows PowerShell:
+Activar en Windows PowerShell: `.\.venv\Scripts\Activate.ps1`. En macOS/Linux: `source .venv/bin/activate`.
 
-```powershell
-.\.venv\Scripts\Activate.ps1
-```
-
-Activar en macOS/Linux:
-
-```sh
-source .venv/bin/activate
-```
-
-Instalar y ejecutar:
-
-```sh
+```bash
 python -m pip install -r requirements.txt
-python manage.py check
 python manage.py migrate
+python manage.py createsuperuser
 python manage.py runserver
 ```
 
-Abrir http://127.0.0.1:8000/ para ver la pantalla inicial de Django. Detener con Ctrl+C.
+Abrir http://127.0.0.1:8000/. Para el admin, abrir `/admin/` y usar el superusuario creado localmente. No hay usuarios ni contraseñas reales incluidos en el repositorio.
 
-Proyecto: `blog_project`. App principal: `posts`, registrada como `posts.apps.PostsConfig`. Idioma `es-ar`; zona `America/Argentina/Buenos_Aires`. Esta entrega prepara únicamente la base: no incluye modelos propios, vistas ni templates del blog.
+### Datos y archivos de demostración
 
-La configuración es de desarrollo local (`DEBUG=True`). La clave de firma se genera en memoria para cada arranque; puede fijarse con la variable de entorno `DJANGO_SECRET_KEY` para conservar sesiones entre reinicios. No contiene una clave privada persistente en el repositorio. `.gitignore` excluye `.venv/`, `venv/`, `db.sqlite3`, `.env`, temporales y cachés.
+La base SQLite y `media/` no se versionan. `migrate` reconstruye el esquema. Desde `/admin/`, agregar al menos tres posts con distintos estados para repetir la práctica del módulo 9. También se puede usar `python manage.py seed_posts --username TU_USUARIO` para cargar tres ejemplos sintéticos sin crear credenciales. Repetir el comando no duplica los ejemplos existentes del usuario.
 
-## Entregas anteriores
+Crear publicaciones desde «Escribir» o `/post/nuevo/`, elegir una imagen PNG/JPEG y guardar. `ImageField` y Pillow validan el archivo. `enctype="multipart/form-data"` y `request.FILES` permiten cargarlo en `media/posts/`. Los avatares van a `media/avatares/`. Los templates comprueban si hay imagen antes de acceder a su URL. En desarrollo, las URLs de media se sirven con DEBUG; no es una configuración de despliegue público.
 
-| Etapa | Carpeta | Ejecutar desde esa carpeta |
-|---|---|---|
-| 1. Entorno y evidencia | [01_entorno](preentregas/01_entorno) | `python evidencia_post.py` |
-| 2. Colecciones | [02_estructuras](preentregas/02_estructuras) | `python estructura_blog.py` |
-| 3. Menú interactivo | [03_interactivo](preentregas/03_interactivo) | `python sistema_blog.py` |
-| 4. Funciones y validación | [04_funciones](preentregas/04_funciones) | `python sistema_blog_modular.py` |
-| 5. Paquetes y módulos | [05_paquetes](preentregas/05_paquetes) | `python main.py` |
-| 6. Objetos y JSON | [06_poo_json](preentregas/06_poo_json) | `python main.py` |
+### Variables de entorno
 
-Las etapas 1–6 usan la biblioteca estándar. Los contenidos de los posts son datos de muestra. La evidencia de ejecución y el informe de pruebas están en `evidencias/`. Para repetir las verificaciones: `python pruebas/verificar.py` desde la raíz, con el entorno activado.
+La app lee variables del proceso. `.env.example` es una guía; no carga automáticamente un archivo `.env` ni requiere python-decouple. Sin `DJANGO_SECRET_KEY`, genera un secreto temporal al arrancar, por lo que las sesiones dejan de valer al reiniciar. Para conservar sesiones, exportar una clave local aleatoria estable antes de iniciar el servidor. Nunca subirla a Git.
 
-## Continuación: módulo 8
-Inicio y Acerca de usan herencia de templates y CSS de la app. Rama `continuacion-blog`, preparada antes de la apertura del campus.
+Ejemplo PowerShell:
+```powershell
+$env:DJANGO_SECRET_KEY = python -c "import secrets; print(secrets.token_urlsafe(50))"
+$env:DJANGO_DEBUG = "true"
+python manage.py runserver
+```
 
-## Módulo 9: modelos y admin
-Ejecutar `python manage.py migrate` y `python manage.py createsuperuser`. Ingresar a `/admin/` con ese usuario y cargar al menos tres Posts de estados diferentes. El inicio lista solo publicados, ordenados por fecha. Base local ignorada; repetir estos pasos al clonar.
+El proyecto usa `BASE_DIR`; no contiene rutas absolutas. DEBUG y servidor de desarrollo se destinan a práctica local.
 
-## Módulo 10: CRUD e imágenes
-Formularios multipart y `request.FILES` guardan imágenes en `media/posts/`. `MEDIA_ROOT` usa BASE_DIR; las URLs de desarrollo sirven los archivos. La carpeta media no se versiona: subir imágenes nuevas desde el formulario al reconstruir el proyecto. Los detalles toleran publicaciones sin imagen.
+## Pruebas
 
-## Módulo 11: cuentas y perfil
-Registro, login, logout por POST y perfil con biografía, enlace y avatar. Las acciones de escritura requieren sesión y la propiedad del post. `Perfil` es el modelo; `Profile` es un alias para el nombre usado en el checklist. Una señal crea el perfil automáticamente y el registro usa `get_or_create` para no duplicarlo.
+```bash
+python manage.py check
+python manage.py makemigrations --check --dry-run
+python manage.py test posts
+python pruebas/verificar.py
+```
+
+Las pruebas del blog usan una base temporal y archivos de imágenes temporales. Cubren registro, perfil, login/logout, CRUD, imágenes, rutas anónimas, permisos entre usuarios, borradores, búsqueda, validaciones y CSRF. Los resultados de la verificación están en `evidencias/continuacion.md`.
+
+## Recorrido y archivos
+
+- `preentregas/01_entorno` a `06_poo_json`: ejercicios iniciales ya presentados.
+- `blog_project/`: configuración y URLs del proyecto, iniciado en módulo 7.
+- Módulo 8: `posts/templates/posts/{base,inicio,acerca}.html` y `posts/static/posts/css/estilos.css`.
+- Módulo 9: modelo Post, admin, migración 0001 y lista desde el ORM. Commit: **Checkpoint: Modelos y Admin configurados**.
+- Módulo 10: ModelForm, imagen, migración 0002 y CRUD.
+- Módulo 11: usuarios, `Perfil`, signals, migración 0003 y permisos.
+- Final: integración, búsqueda, documentación y verificaciones.
+
+La consigna usa los nombres `Profile` y `Perfil`: se implementó el modelo `Perfil` con alias `Profile`, sin duplicar tablas. `post_save` crea el perfil y la vista de registro llama a `get_or_create`, conciliando la señal pedida por el checklist con la creación explícita de la actividad. `autor` es una firma de presentación; `propietario` identifica la cuenta autorizada para modificar el post.
+
+Autor: **Mateo Sapia**. Proyecto académico para el curso de Python de Coderhouse. Datos de demostración ficticios.

@@ -34,7 +34,7 @@ def detalle_post(request, pk):
 
 @login_required
 def crear_post(request):
-    form = PostForm(request.POST or None, request.FILES or None, initial={'autor': request.user.get_full_name() or request.user.username})
+    form = PostForm(request.POST if request.method == 'POST' else None, request.FILES or None, initial={'autor': request.user.get_full_name() or request.user.username})
     if request.method == 'POST' and form.is_valid():
         post = form.save(commit=False)
         post.propietario = request.user
@@ -46,7 +46,7 @@ def crear_post(request):
 @login_required
 def editar_post(request, pk):
     post = get_object_or_404(Post, pk=pk, propietario=request.user)
-    form = PostForm(request.POST or None, request.FILES or None, instance=post)
+    form = PostForm(request.POST if request.method == 'POST' else None, request.FILES or None, instance=post)
     if request.method == 'POST' and form.is_valid():
         form.save()
         messages.success(request, 'Cambios guardados.')
@@ -65,7 +65,7 @@ def eliminar_post(request, pk):
 def registro(request):
     if request.user.is_authenticated:
         return redirect('posts:perfil')
-    form = RegistroForm(request.POST or None)
+    form = RegistroForm(request.POST if request.method == 'POST' else None)
     if request.method == 'POST' and form.is_valid():
         with transaction.atomic():
             usuario = form.save()
@@ -79,7 +79,7 @@ def registro(request):
 @login_required
 def perfil(request):
     perfil_usuario, _ = Perfil.objects.get_or_create(user=request.user)
-    form = PerfilForm(request.POST or None, request.FILES or None, instance=perfil_usuario)
+    form = PerfilForm(request.POST if request.method == 'POST' else None, request.FILES or None, instance=perfil_usuario)
     if request.method == 'POST' and form.is_valid():
         form.save()
         messages.success(request, 'Perfil actualizado.')
