@@ -57,3 +57,6 @@ Inicio y Acerca de usan herencia de templates y CSS de la app. Rama `continuacio
 
 ## Módulo 9: modelos y admin
 Ejecutar `python manage.py migrate` y `python manage.py createsuperuser`. Ingresar a `/admin/` con ese usuario y cargar al menos tres Posts de estados diferentes. El inicio lista solo publicados, ordenados por fecha. Base local ignorada; repetir estos pasos al clonar.
+
+## Módulo 10: CRUD e imágenes
+Formularios multipart y `request.FILES` guardan imágenes en `media/posts/`. `MEDIA_ROOT` usa BASE_DIR; las URLs de desarrollo sirven los archivos. La carpeta media no se versiona: subir imágenes nuevas desde el formulario al reconstruir el proyecto. Los detalles toleran publicaciones sin imagen.

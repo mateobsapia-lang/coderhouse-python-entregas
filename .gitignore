@@ -8,3 +8,7 @@ db.sqlite3
 *.sqlite3
 *.json.bak
 *.tmp
+
+media/
+.env.local
+!.env.example
