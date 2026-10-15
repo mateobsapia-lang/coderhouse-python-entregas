@@ -1,0 +1,2 @@
+{% extends 'posts/base.html' %}
+{% block content %}<section class="form-panel"><h1>Eliminar publicación</h1><p>Vas a eliminar «{{ post.titulo }}». Confirmá para continuar.</p><form method="post">{% csrf_token %}<div class="actions"><button class="danger" type="submit">Confirmar eliminación</button><a href="{% url 'posts:detalle' post.pk %}">Cancelar</a></div></form></section>{% endblock %}

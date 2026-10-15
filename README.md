@@ -1,6 +1,6 @@
 # Blog Project — Python, Mateo Sapia
 
-Evolución de un blog desde scripts de consola hasta un sitio Django con HTML, CSS y publicaciones almacenadas en SQLite. La preentrega 9 continúa el proyecto de los módulos 7 y 8 en la raíz; las etapas anteriores quedan preservadas en `preentregas/` dentro del mismo repositorio.
+Evolución de un blog desde scripts de consola hasta un sitio Django con HTML, CSS y publicaciones almacenadas en SQLite. La preentrega 10 agrega creación, detalle, edición y eliminación de publicaciones con imágenes sobre el proyecto de los módulos anteriores; las primeras etapas quedan preservadas en `preentregas/`.
 
 ## Ejecutar el sitio Django
 
@@ -64,7 +64,7 @@ El commit `55090f8` registra la implementación de templates y CSS.
 
 ## Preentrega 9: modelos y admin
 
-`main` contiene este checkpoint. `posts/models.py` define `Post` con los campos `titulo`, `contenido`, `autor`, `fecha_creacion` (`auto_now_add=True`) y `estado` con opciones Borrador, Publicado y Archivado. `__str__` devuelve el título. La migración `posts/migrations/0001_initial.py` crea la tabla.
+`posts/models.py` define `Post` con los campos `titulo`, `contenido`, `autor`, `fecha_creacion` (`auto_now_add=True`) y `estado` con opciones Borrador, Publicado y Archivado. `__str__` devuelve el título. La migración `posts/migrations/0001_initial.py` crea la tabla.
 
 Para entrar al panel administrativo:
 
@@ -86,4 +86,31 @@ python manage.py makemigrations --check --dry-run
 python manage.py test posts
 ```
 
-Los módulos 10, 11 y el final preparados siguen en la rama `continuacion-blog`.
+## Preentrega 10: CRUD e imágenes
+
+El CRUD está disponible desde la interfaz del sitio:
+
+| Operación | Ruta | Cómo probar |
+|---|---|---|
+| Listar | `/` | Muestra los posts publicados y permite abrir su detalle. |
+| Crear | `/post/nuevo/` | Completar título, contenido, autor y estado; la imagen es opcional. |
+| Ver detalle | `/post/<id>/` | Muestra contenido, autor, fecha, estado e imagen cuando existe. |
+| Editar | `/post/<id>/editar/` | Cambiar los datos y, opcionalmente, reemplazar o quitar la imagen. |
+| Eliminar | `/post/<id>/eliminar/` | Primero muestra la confirmación; solo el envío por POST elimina. |
+
+`posts/forms.py` define `PostForm`, un `ModelForm` con `titulo`, `contenido`, `autor`, `estado` e `imagen`. Las vistas de creación y edición pasan `request.POST` y `request.FILES`; el template usa `enctype="multipart/form-data"` y protección CSRF. Los templates heredan de `posts/base.html`.
+
+La dependencia nueva es **Pillow**, incluida en `requirements.txt`. `imagen` es un `ImageField(upload_to='posts/', null=True, blank=True)`. La migración `0002_post_imagen.py` incorpora ese campo: aplicar `python manage.py migrate` después de instalar las dependencias. `python manage.py makemigrations --check --dry-run` comprueba que no falten migraciones.
+
+`MEDIA_URL='/media/'` y `MEDIA_ROOT=BASE_DIR / 'media'` guardan las imágenes en `media/posts/`. `blog_project/urls.py` las sirve durante el desarrollo cuando `DEBUG=True`. La base y las imágenes locales están excluidas de Git; las migraciones reconstruyen la estructura al clonar.
+
+Recorrido de prueba: crear una publicación con un PNG o JPEG y estado **Publicado**, comprobar su tarjeta y su imagen en el detalle, editarla y reemplazar la imagen, crear otra sin imagen y verificar que se muestra correctamente. Finalmente, entrar en Eliminar, cancelar una vez y confirmar después. Una imagen inválida o los campos obligatorios vacíos deben mostrar errores sin guardar una publicación.
+
+Este checkpoint se ejecuta en desarrollo local y no incorpora autenticación ni permisos de autor; esos temas corresponden al módulo 11, preparado en `continuacion-blog`. No desplegar esta etapa como un gestor público de contenido.
+
+Para repetir las verificaciones de integración y consola:
+
+```sh
+python manage.py test posts
+python pruebas/verificar.py
+```

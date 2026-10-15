@@ -12,6 +12,8 @@ class Post(models.Model):
     fecha_creacion = models.DateTimeField(auto_now_add=True)
     estado = models.CharField(max_length=12, choices=Estado.choices, default=Estado.BORRADOR)
 
+    imagen = models.ImageField(upload_to='posts/', null=True, blank=True)
+
     class Meta:
         ordering = ['-fecha_creacion', '-pk']
 
